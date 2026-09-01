@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { Star, Truck, ShieldCheck, Flame, BadgeCheck } from "lucide-react";
 import kitAsset from "@/assets/kit-ana-castela.asset.json";
 import heroImg from "@/assets/hero-western.jpg";
+import { PixCheckout } from "@/components/PixCheckout";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({

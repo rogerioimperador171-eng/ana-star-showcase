@@ -74,7 +74,9 @@ function Stars() {
 }
 
 function Index() {
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
   return (
+
     <div className="min-h-screen bg-background text-foreground">
       {/* Announcement bar */}
       <div className="bg-primary py-2 text-center font-display text-sm tracking-[0.2em] text-primary-foreground">
@@ -243,12 +245,14 @@ function Index() {
           <div className="mt-6 font-display text-7xl text-primary">
             <span className="align-top text-4xl">R$</span> 29<span className="align-top text-4xl">,90</span>
           </div>
-          <a
-            href="#"
+          <button
+            type="button"
+            onClick={() => setCheckoutOpen(true)}
             className="mt-8 inline-block bg-primary px-10 py-5 font-display text-3xl tracking-widest text-primary-foreground shadow-[0_0_50px_-5px_var(--color-pinkglow)] transition-transform hover:scale-105"
           >
-            ★ COMPRAR AGORA ★
-          </a>
+            ★ PAGAR COM PIX ★
+          </button>
+
           <p className="mt-4 text-xs text-muted-foreground">
             Pix, cartão ou boleto · Envio para todo o Brasil
           </p>
@@ -258,6 +262,9 @@ function Index() {
       <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
         <p>Kit Sobrevivência — Edição Barretos 2026 · Produto não oficial de fã, sem vínculo com a artista.</p>
       </footer>
+
+      <PixCheckout open={checkoutOpen} onOpenChange={setCheckoutOpen} />
+
     </div>
   );
 }

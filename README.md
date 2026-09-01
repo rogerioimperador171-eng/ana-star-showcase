@@ -1,29 +1,59 @@
-# Welcome to your Lovable project
+# Kit Sobrevivência Ana Castela — Landing Page com PIX (ProPixBR)
 
-This project was built with [Lovable](https://lovable.dev).
+Landing page em React + TypeScript (TanStack Start + Vite) com checkout PIX integrado à API
+`https://api.propixbr.com`.
 
-## Build with Lovable
+## Como funciona o pagamento
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+1. O usuário clica em **GARANTA JÁ O SEU / COMPRAR AGORA** e informa nome e CPF/CNPJ.
+2. O frontend chama a função de servidor `createPixDeposit` (`src/lib/pix.functions.ts`), que faz
+   `POST /api/v1/deposit` com os headers `x-client-id`, `x-client-secret` e `Content-Type: application/json`.
+3. A resposta (`transactionId`, `copyPaste`, `qrcodeUrl`, `status`) é exibida na hora: QR Code,
+   PIX copia e cola, botão **COPIAR PIX** e status "Aguardando pagamento".
+4. A cada 3 segundos o app chama `checkPixStatus` → `POST /api/v1/check` com o `transactionId`.
+   Quando `transactionState` for `COMPLETO`, o polling para e a tela de pagamento aprovado aparece
+   sem recarregar a página.
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+As credenciais **nunca** vão para o navegador: só o código do servidor lê `process.env`.
 
-## Development
+## Variáveis de ambiente
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+| Variável               | Descrição                          |
+| ---------------------- | ---------------------------------- |
+| `PROPAY_CLIENT_ID`     | Client ID da ProPixBR (`live_...`) |
+| `PROPAY_CLIENT_SECRET` | Client Secret da ProPixBR (`sk_...`) |
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+Já estão configuradas neste projeto. Para alterá-las, abra
+**Project Settings → Secrets** no Lovable e edite os valores (ou peça ao assistente para atualizar).
+
+Localmente, crie um arquivo `.env` na raiz (não versionado):
+
+```
+PROPAY_CLIENT_ID=live_xxx
+PROPAY_CLIENT_SECRET=sk_xxx
 ```
 
-## Built with
+## Testar localmente
 
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
+```sh
+npm i
+npm run dev     # http://localhost:8080
+npm run build   # build de produção
+```
+
+## Publicação
+
+O projeto roda em TanStack Start (SSR) e é publicado pelo botão **Publish** do Lovable — o backend
+das rotas de pagamento sobe junto, sem configuração extra. Não é necessário `netlify.toml` nem
+Netlify Functions: as funções de servidor do TanStack cumprem exatamente esse papel (protegem as
+credenciais no servidor). Caso queira hospedar em outro provedor, use um host com suporte a SSR
+(Node/Edge) e defina as duas variáveis de ambiente acima no painel do provedor.
+
+## Atualizar a API no futuro
+
+Todo o contrato com a ProPixBR está em um único arquivo: `src/lib/pix.functions.ts`.
+
+- `BASE_URL` — troque a base da API.
+- `createPixDeposit` — payload e leitura da resposta de `/api/v1/deposit`.
+- `checkPixStatus` — payload e leitura da resposta de `/api/v1/check`.
+- A UI do checkout está em `src/components/PixCheckout.tsx` (intervalo do polling, textos e estados).

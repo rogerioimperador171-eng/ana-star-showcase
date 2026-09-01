@@ -41,15 +41,32 @@ npm run dev     # http://localhost:8080
 npm run build   # build de produção
 ```
 
-## Publicação
+## Publicação na Netlify
 
-O projeto roda em TanStack Start (SSR) e é publicado pelo botão **Publish** do Lovable — o backend
-das rotas de pagamento sobe junto, sem configuração extra. Não é necessário `netlify.toml` nem
-Netlify Functions: as funções de servidor do TanStack cumprem exatamente esse papel (protegem as
-credenciais no servidor). Caso queira hospedar em outro provedor, use um host com suporte a SSR
-(Node/Edge) e defina as duas variáveis de ambiente acima no painel do provedor.
+O projeto agora tem `netlify.toml` configurado:
+
+```
+[build]
+  command = "npm run build"
+  publish = "dist"
+```
+
+O build gera o site estático em `dist/` e a função SSR em
+`.netlify/functions-internal/server` (preset `netlify` do Nitro, com rota `/*`),
+que é quem executa as funções de servidor do PIX. Nenhuma configuração extra de
+redirect é necessária.
+
+**Antes do deploy, cadastre as variáveis em Site configuration → Environment variables:**
+
+- `PROPAY_CLIENT_ID`
+- `PROPAY_CLIENT_SECRET`
+
+Depois é só disparar um novo deploy (Deploys → Trigger deploy → Clear cache and deploy site).
+
+Publicar pelo botão **Publish** do Lovable continua funcionando normalmente.
 
 ## Atualizar a API no futuro
+
 
 Todo o contrato com a ProPixBR está em um único arquivo: `src/lib/pix.functions.ts`.
 

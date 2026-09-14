@@ -22,8 +22,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createPixDeposit, checkPixStatus } from "@/lib/pix.functions";
 
-const PRODUCT_PRICE = 29.9;
-const PRODUCT_NAME = "Kit Sobrevivência Ana Castela — Edição Barretos 2026";
+const PRODUCT_PRICE = 49.9;
+const PRODUCT_NAME = "Kit 3 Squishies — Super Oferta";
 
 const SHIPPING = [
   { id: "pac", label: "ENVIOS PAC", eta: "7 dias úteis", price: 18.91 },
@@ -439,7 +439,7 @@ export function PixCheckout({ open, onOpenChange }: { open: boolean; onOpenChang
               <p className="font-display text-xl tracking-wide">RESUMO DO PEDIDO</p>
               <div className="mt-3 space-y-2 text-sm">
                 <div className="flex justify-between gap-3">
-                  <span className="text-muted-foreground">Kit Sobrevivência Ana Castela</span>
+                  <span className="text-muted-foreground">Kit 3 Squishies (Super Oferta)</span>
                   <span>{brl(PRODUCT_PRICE)}</span>
                 </div>
                 <div className="flex justify-between gap-3">

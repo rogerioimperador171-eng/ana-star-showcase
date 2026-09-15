@@ -21,9 +21,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createPixDeposit, checkPixStatus } from "@/lib/pix.functions";
+import kitAsset from "@/assets/kit-squishy.asset.json";
 
 const PRODUCT_PRICE = 49.9;
 const PRODUCT_NAME = "Kit 3 Squishies — Super Oferta";
+const PRODUCT_IMAGE_URL = `https://project--24592de8-3a87-4821-adfa-a124e2b3eddd-dev.lovable.app${kitAsset.url}`;
+const PRODUCT_ITEMS = [
+  "Butter Squishy Manteiga",
+  "Needoh Schylling Nice Cube Glitter & Glow Nee Doh Original",
+  "Squishy Queijo Alívio Estresse Brinquedo Sensorial Apertar",
+];
 
 const SHIPPING = [
   { id: "pac", label: "ENVIOS PAC", eta: "7 dias úteis", price: 18.91 },

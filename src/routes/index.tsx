@@ -109,8 +109,8 @@ function Index() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-background/80 to-background" />
-        <div className="relative mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-2 md:items-center md:py-24">
-          <div>
+        <div className="relative mx-auto grid max-w-6xl gap-10 px-6 py-10 md:grid-cols-2 md:items-center md:py-24">
+          <div className="order-2 md:order-1">
             <p className="mb-4 inline-block -rotate-2 bg-primary px-4 py-1 font-display text-xl tracking-widest text-primary-foreground">
               ★ KIT 3 PRODUTOS ★
             </p>
@@ -141,14 +141,18 @@ function Index() {
               <span>4.9/5 — 986 avaliações · +3.200 kits vendidos</span>
             </div>
           </div>
-          <div className="relative">
+          <div className="relative order-1 md:order-2">
             <div className="absolute -inset-6 rounded-full bg-primary/20 blur-3xl" />
             <img
               src={kitAsset.url}
               alt="Kit 3 Squishies: cubo squeeze gelo com glitter, queijo squishy e barra de manteiga anti-estresse"
-              className="relative w-full rotate-1 rounded-2xl border border-border shadow-2xl"
+              width={1024}
+              height={1536}
+              loading="eager"
+              decoding="async"
+              className="relative mx-auto block w-full max-w-sm rotate-1 rounded-2xl border border-border shadow-2xl md:max-w-none"
             />
-            <p className="absolute -left-2 top-6 -rotate-6 bg-primary px-3 py-1 font-display text-lg tracking-widest text-primary-foreground shadow-lg">
+            <p className="absolute -left-1 -top-3 -rotate-6 bg-primary px-3 py-1 font-display text-lg tracking-widest text-primary-foreground shadow-lg md:-left-2 md:top-6">
               ★ OFERTA LIMITADA ★
             </p>
           </div>

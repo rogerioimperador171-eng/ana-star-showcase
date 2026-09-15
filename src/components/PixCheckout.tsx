@@ -21,9 +21,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createPixDeposit, checkPixStatus } from "@/lib/pix.functions";
+import kitAsset from "@/assets/kit-squishy.asset.json";
 
 const PRODUCT_PRICE = 49.9;
 const PRODUCT_NAME = "Kit 3 Squishies — Super Oferta";
+const PRODUCT_IMAGE_URL = `https://project--24592de8-3a87-4821-adfa-a124e2b3eddd-dev.lovable.app${kitAsset.url}`;
+const PRODUCT_ITEMS = [
+  "Butter Squishy Manteiga",
+  "Needoh Schylling Nice Cube Glitter & Glow Nee Doh Original",
+  "Squishy Queijo Alívio Estresse Brinquedo Sensorial Apertar",
+];
 
 const SHIPPING = [
   { id: "pac", label: "ENVIOS PAC", eta: "7 dias úteis", price: 18.91 },
@@ -252,6 +259,27 @@ export function PixCheckout({ open, onOpenChange }: { open: boolean; onOpenChang
         </DialogHeader>
 
         {step < 4 && (
+          <div className="flex gap-3 rounded-lg border border-border bg-card p-3">
+            <img
+              src={PRODUCT_IMAGE_URL}
+              alt="Kit 3 Squishies — Super Oferta"
+              width={72}
+              height={72}
+              className="h-18 w-18 shrink-0 rounded-md border border-border object-cover"
+            />
+            <div className="min-w-0">
+              <p className="text-sm font-semibold leading-tight">{PRODUCT_NAME}</p>
+              <ul className="mt-1 list-disc space-y-0.5 pl-4 text-xs text-muted-foreground">
+                {PRODUCT_ITEMS.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+              <p className="mt-1 font-display text-lg text-primary">{brl(PRODUCT_PRICE)}</p>
+            </div>
+          </div>
+        )}
+
+        {step < 4 && (
           <div className="flex gap-1.5">
             {[1, 2, 3].map((s) => (
               <span
@@ -437,6 +465,23 @@ export function PixCheckout({ open, onOpenChange }: { open: boolean; onOpenChang
           <div className="space-y-4">
             <div className="rounded-lg border border-border bg-card p-4">
               <p className="font-display text-xl tracking-wide">RESUMO DO PEDIDO</p>
+              <div className="mt-3 flex gap-3 rounded-md border border-border bg-background/50 p-3">
+                <img
+                  src={PRODUCT_IMAGE_URL}
+                  alt="Kit 3 Squishies — Super Oferta"
+                  width={72}
+                  height={72}
+                  className="h-18 w-18 shrink-0 rounded-md border border-border object-cover"
+                />
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold leading-tight">{PRODUCT_NAME}</p>
+                  <ul className="mt-1 list-disc space-y-0.5 pl-4 text-xs text-muted-foreground">
+                    {PRODUCT_ITEMS.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
               <div className="mt-3 space-y-2 text-sm">
                 <div className="flex justify-between gap-3">
                   <span className="text-muted-foreground">Kit 3 Squishies (Super Oferta)</span>

@@ -444,6 +444,23 @@ export function PixCheckout({ open, onOpenChange }: { open: boolean; onOpenChang
           <div className="space-y-4">
             <div className="rounded-lg border border-border bg-card p-4">
               <p className="font-display text-xl tracking-wide">RESUMO DO PEDIDO</p>
+              <div className="mt-3 flex gap-3 rounded-md border border-border bg-background/50 p-3">
+                <img
+                  src={PRODUCT_IMAGE_URL}
+                  alt="Kit 3 Squishies — Super Oferta"
+                  width={72}
+                  height={72}
+                  className="h-18 w-18 shrink-0 rounded-md border border-border object-cover"
+                />
+                <div className="min-w-0">
+                  <p className="text-sm font-semibold leading-tight">{PRODUCT_NAME}</p>
+                  <ul className="mt-1 list-disc space-y-0.5 pl-4 text-xs text-muted-foreground">
+                    {PRODUCT_ITEMS.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
               <div className="mt-3 space-y-2 text-sm">
                 <div className="flex justify-between gap-3">
                   <span className="text-muted-foreground">Kit 3 Squishies (Super Oferta)</span>

@@ -4,6 +4,7 @@ import { Star, Truck, ShieldCheck, Flame, BadgeCheck } from "lucide-react";
 import kitAsset from "@/assets/kit-squishy.asset.json";
 import { PixCheckout } from "@/components/PixCheckout";
 
+const PRODUCT_IMAGE_URL = `https://project--24592de8-3a87-4821-adfa-a124e2b3eddd-dev.lovable.app${kitAsset.url}`;
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -21,7 +22,9 @@ export const Route = createFileRoute("/")({
           "Diversão, relaxamento e estilo em um só kit! 3 squishies anti-estresse por R$ 49,90. Estoque limitado.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:image", content: PRODUCT_IMAGE_URL },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: PRODUCT_IMAGE_URL },
     ],
   }),
   component: Index,
@@ -144,7 +147,7 @@ function Index() {
           <div className="relative order-1 md:order-2">
             <div className="absolute -inset-6 rounded-full bg-primary/20 blur-3xl" />
             <img
-              src={kitAsset.url}
+              src={PRODUCT_IMAGE_URL}
               alt="Kit 3 Squishies: cubo squeeze gelo com glitter, queijo squishy e barra de manteiga anti-estresse"
               width={1024}
               height={1536}

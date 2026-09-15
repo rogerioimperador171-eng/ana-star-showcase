@@ -109,8 +109,8 @@ function Index() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-background/80 to-background" />
-        <div className="relative mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-2 md:items-center md:py-24">
-          <div>
+        <div className="relative mx-auto grid max-w-6xl gap-10 px-6 py-10 md:grid-cols-2 md:items-center md:py-24">
+          <div className="order-2 md:order-1">
             <p className="mb-4 inline-block -rotate-2 bg-primary px-4 py-1 font-display text-xl tracking-widest text-primary-foreground">
               ★ KIT 3 PRODUTOS ★
             </p>

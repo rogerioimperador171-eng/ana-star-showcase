@@ -1,300 +1,318 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Star, Truck, ShieldCheck, Flame, BadgeCheck } from "lucide-react";
-import kitAsset from "@/assets/kit-squishy.asset.json";
+import { useEffect, useState } from "react";
+import {
+  BadgeCheck,
+  ChevronLeft,
+  ChevronRight,
+  Gift,
+  Menu,
+  PackageCheck,
+  Play,
+  Search,
+  ShieldCheck,
+  ShoppingCart,
+  Sparkles,
+  Star,
+  Truck,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { PixCheckout } from "@/components/PixCheckout";
+import {
+  FUNBOX_GIF,
+  FUNBOX_HERO,
+  FUNBOX_ITEMS,
+  FUNBOX_MEDIA,
+  FUNBOX_VARIANTS,
+  type FunboxVariantId,
+} from "@/lib/funbox";
 
-const PRODUCT_IMAGE_URL = `https://project--24592de8-3a87-4821-adfa-a124e2b3eddd-dev.lovable.app${kitAsset.url}`;
+const brl = (value: number) => value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Kit 3 Squishies — Cubo Gelo, Queijo e Barra Manteiga | Super Oferta" },
+      { title: "MiniKo Squishy FunBox™ — Caixa Surpresa com 8 Squishies" },
       {
         name: "description",
-        content:
-          "Kit 3 Squishies anti-estresse: Cubo Squeeze Gelo, Queijo Squishy e Barra Manteiga por apenas R$ 49,90. +3.200 kits vendidos com entrega rápida.",
+        content: "Descubra a MiniKo Squishy FunBox com 8 squishies diferentes, frete grátis e pagamento seguro por Pix.",
       },
-      { property: "og:title", content: "Kit 3 Squishies — Super Oferta por R$ 49,90" },
+      { property: "og:title", content: "MiniKo Squishy FunBox™ — 8 squishies em uma caixa surpresa" },
       {
         property: "og:description",
-        content:
-          "Diversão, relaxamento e estilo em um só kit! 3 squishies anti-estresse por R$ 49,90. Estoque limitado.",
+        content: "8 formatos, texturas e sensações para apertar, brincar, colecionar e presentear.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:image", content: PRODUCT_IMAGE_URL },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:image", content: PRODUCT_IMAGE_URL },
     ],
   }),
   component: Index,
 });
 
 const reviews = [
-  {
-    name: "Larissa M.",
-    city: "São Paulo, SP",
-    text: "Chegou em 3 dias, super bem embalado! O cubo de gelo com glitter é ainda mais bonito pessoalmente. Meu filho não larga mais.",
-    product: "Kit 3 Squishies",
-  },
-  {
-    name: "Camila R.",
-    city: "Ribeirão Preto, SP",
-    text: "Comprei de presente pra minha sobrinha e ela amou! Entrega rápida e o queijo squishy é muito macio. Recomendo demais.",
-    product: "Kit 3 Squishies",
-  },
-  {
-    name: "Juliana F.",
-    city: "Goiânia, GO",
-    text: "Segundo kit que compro, dessa vez pra mim! Uso a barra manteiga no trabalho e ajuda muito na ansiedade. Chegou antes do prazo!",
-    product: "Kit 3 Squishies",
-  },
-  {
-    name: "Beatriz S.",
-    city: "Uberaba, MG",
-    text: "Produto idêntico às fotos, atendimento nota 10 e entrega rapidinha. Os squishies são de ótima qualidade, não estouram fácil.",
-    product: "Kit 3 Squishies",
-  },
-  {
-    name: "Rafael T.",
-    city: "Curitiba, PR",
-    text: "Comprei pro meu filho que tem TDAH e o cubo squeeze ajuda muito na concentração dele. Entrega em 4 dias e tudo certinho.",
-    product: "Kit 3 Squishies",
-  },
-  {
-    name: "Fernanda L.",
-    city: "Belo Horizonte, MG",
-    text: "Amei demais! O queijo é o mais gostoso de apertar, super satisfatório. Veio muito bem embalado, cada um na caixinha.",
-    product: "Kit 3 Squishies",
-  },
-  {
-    name: "Diego A.",
-    city: "Fortaleza, CE",
-    text: "Preço ótimo por 3 produtos de qualidade. Chegou em 5 dias aqui no Ceará, com código de rastreio desde o início. Valeu muito a pena.",
-    product: "Kit 3 Squishies",
-  },
-  {
-    name: "Mariana P.",
-    city: "Porto Alegre, RS",
-    text: "Kit perfeito pra presentear! Comprei um pra mim e um pra minha amiga. Cores lindas, cheirinho bom e entrega super rápida.",
-    product: "Kit 3 Squishies",
-  },
+  { name: "Olivia R.", text: "Pedi e chegou antes do prazo. Todos vieram bem embalados e são de ótima qualidade." },
+  { name: "Bruna O.", text: "Muito legais, minha filha ficou alucinada. A caixa é linda e veio tudo certinho." },
+  { name: "Juliano Q.", text: "Vale muito a pena. São oito modelos diferentes e o frete foi bem rápido." },
+  { name: "Naiane E.", text: "Ótimos! Um mais bonito que o outro e muito gostosos de apertar." },
+  { name: "Daiane T.", text: "Tudo perfeito. A caixa chegou bem protegida e recomendo muito." },
+  { name: "Gabriela U.", text: "Sensacional. Um mais fofo que o outro, foi um presente perfeito." },
+  { name: "Amelia O.", text: "Chegou hoje e nós estamos enlouquecidas. São muito gostosinhos de apertar." },
+  { name: "Vanessa Z.", text: "Chegou bem rapidinho com todos os itens diferentes e com rastreamento." },
+  { name: "Carla P.", text: "São lindos. Amamos a surpresa e a qualidade dos squishies." },
 ];
 
-const marqueeItems = [
-  "SUPER OFERTA",
-  "KIT 3 PRODUTOS",
-  "+3.200 KITS VENDIDOS",
-  "ENVIO PARA TODO O BRASIL",
-  "NOTA 4.9 DE SATISFAÇÃO",
-];
-
-function Stars() {
+function Stars({ size = "sm" }: { size?: "sm" | "lg" }) {
   return (
-    <div className="flex gap-0.5 text-gold">
-      {Array.from({ length: 5 }).map((_, i) => (
-        <Star key={i} className="h-4 w-4 fill-current" />
+    <div className="flex gap-0.5 text-gold" aria-label="5 estrelas">
+      {Array.from({ length: 5 }).map((_, index) => (
+        <Star key={index} className={`${size === "lg" ? "h-5 w-5" : "h-4 w-4"} fill-current`} />
       ))}
     </div>
   );
 }
 
 function Index() {
+  const [variantId, setVariantId] = useState<FunboxVariantId>("classic");
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [mediaIndex, setMediaIndex] = useState(0);
+  const product = FUNBOX_VARIANTS[variantId];
+  const media = FUNBOX_MEDIA[mediaIndex] ?? FUNBOX_MEDIA[0];
+
+  useEffect(() => {
+    const targetIndex = variantId === "classic" ? 2 : 3;
+    setMediaIndex(targetIndex);
+  }, [variantId]);
+
+  function buyNow() {
+    setCheckoutOpen(true);
+  }
+
   return (
-
     <div className="min-h-screen bg-background text-foreground">
-      {/* Announcement bar */}
-      <div className="bg-primary py-2 text-center font-display text-sm tracking-[0.2em] text-primary-foreground">
-        ★ FRETE GRÁTIS ACIMA DE 2 KITS — SÓ ENQUANTO DURAR O ESTOQUE ★
+      <div className="bg-accent px-4 py-2 text-center text-xs font-semibold text-accent-foreground sm:text-sm">
+        <span className="font-bold italic">Dia das Crianças chegando!</span> — Até 60% OFF + Frete grátis
       </div>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary/10 via-background/80 to-background" />
-        <div className="relative mx-auto grid max-w-6xl gap-10 px-6 py-10 md:grid-cols-2 md:items-center md:py-24">
-          <div className="order-2 md:order-1">
-            <p className="mb-4 inline-block -rotate-2 bg-primary px-4 py-1 font-display text-xl tracking-widest text-primary-foreground">
-              ★ KIT 3 PRODUTOS ★
-            </p>
-            <h1 className="font-display text-6xl leading-[0.95] md:text-8xl">
-              SUPER
-              <span className="block text-primary">OFERTA</span>
-            </h1>
-            <p className="mt-4 max-w-md text-lg text-muted-foreground">
-              ★ Diversão, relaxamento e estilo em um só kit! ★
-            </p>
-            <div className="mt-6 flex items-end gap-3">
-              <span className="text-sm text-muted-foreground line-through">R$ 89,90</span>
-              <span className="font-display text-6xl text-primary md:text-7xl">
-                <span className="text-3xl align-top">R$</span> 49
-                <span className="text-3xl align-top">,90</span>
-              </span>
-            </div>
-            <div className="mt-6 flex flex-wrap items-center gap-4">
-              <a
-                href="#garantir"
-                className="bg-primary px-8 py-4 font-display text-2xl tracking-widest text-primary-foreground shadow-[0_0_40px_-5px_var(--color-pinkglow)] transition-transform hover:scale-105"
-              >
-                ★ GARANTA JÁ O SEU! ★
-              </a>
-            </div>
-            <div className="mt-6 flex items-center gap-2 text-sm text-muted-foreground">
-              <Stars />
-              <span>4.9/5 — 986 avaliações · +3.200 kits vendidos</span>
-            </div>
-          </div>
-          <div className="relative order-1 md:order-2">
-            <div className="absolute -inset-6 rounded-full bg-primary/20 blur-3xl" />
-            <img
-              src={PRODUCT_IMAGE_URL}
-              alt="Kit 3 Squishies: cubo squeeze gelo com glitter, queijo squishy e barra de manteiga anti-estresse"
-              width={1024}
-              height={1536}
-              loading="eager"
-              decoding="async"
-              className="relative mx-auto block w-full max-w-sm rotate-1 rounded-2xl border border-border shadow-2xl md:max-w-none"
+      <header className="border-b border-border bg-card">
+        <div className="mx-auto flex max-w-6xl items-center gap-4 px-4 py-4 sm:px-6">
+          <a href="#inicio" className="min-w-fit text-3xl font-black text-primary" aria-label="MiniKo, página inicial">
+            Mini<span className="text-accent">Ko</span><span className="text-gold">★</span>
+          </a>
+          <div className="relative hidden flex-1 sm:block">
+            <input
+              aria-label="Pesquisar"
+              placeholder="Pesquisar..."
+              className="h-11 w-full rounded-md border border-input bg-background px-4 pr-12 text-base outline-none focus:ring-2 focus:ring-ring"
             />
-            <p className="absolute -left-1 -top-3 -rotate-6 bg-primary px-3 py-1 font-display text-lg tracking-widest text-primary-foreground shadow-lg md:-left-2 md:top-6">
-              ★ OFERTA LIMITADA ★
+            <Search className="absolute right-4 top-3 h-5 w-5 text-primary" />
+          </div>
+          <div className="ml-auto flex items-center gap-3 text-sm font-semibold">
+            <span className="hidden items-center gap-2 md:flex"><Truck className="h-5 w-5 text-primary" /> Rastrear pedido</span>
+            <span className="hidden h-7 w-px bg-border md:block" />
+            <span className="flex items-center gap-2"><ShoppingCart className="h-5 w-5 text-primary" /> <span className="hidden sm:inline">Carrinho</span></span>
+          </div>
+        </div>
+        <nav className="border-t border-border/60 px-4 py-3 text-center text-sm text-muted-foreground">
+          <span className="inline-flex items-center gap-2"><Menu className="h-4 w-4" /> Principal</span>
+          <span className="mx-5">Kits Squishies</span>
+        </nav>
+      </header>
+
+      <main id="inicio">
+        <div className="mx-auto max-w-6xl px-4 py-5 text-xs text-muted-foreground sm:px-6">
+          Página inicial <span className="mx-2">›</span> Todos os produtos <span className="mx-2">›</span> MiniKo Squishy FunBox™
+        </div>
+
+        <section className="mx-auto grid max-w-6xl gap-6 px-4 pb-10 sm:px-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <div className="min-w-0 rounded-lg border border-border bg-card p-3 sm:p-5">
+            <div className="relative aspect-square overflow-hidden rounded-md bg-muted">
+              {media?.type === "video" ? (
+                <video
+                  key={media.src}
+                  controls
+                  playsInline
+                  poster={media.poster}
+                  className="h-full w-full object-contain"
+                  aria-label={media.alt}
+                >
+                  <source src={media.src} type="video/mp4" />
+                </video>
+              ) : (
+                <img
+                  src={media?.src}
+                  alt={media?.alt ?? product.name}
+                  width={1024}
+                  height={1024}
+                  loading="eager"
+                  decoding="async"
+                  className="h-full w-full object-contain"
+                />
+              )}
+              <Button
+                type="button"
+                size="icon"
+                variant="outline"
+                className="absolute left-2 top-1/2 -translate-y-1/2 bg-card/90"
+                onClick={() => setMediaIndex((mediaIndex - 1 + FUNBOX_MEDIA.length) % FUNBOX_MEDIA.length)}
+                aria-label="Foto anterior"
+              >
+                <ChevronLeft />
+              </Button>
+              <Button
+                type="button"
+                size="icon"
+                variant="outline"
+                className="absolute right-2 top-1/2 -translate-y-1/2 bg-card/90"
+                onClick={() => setMediaIndex((mediaIndex + 1) % FUNBOX_MEDIA.length)}
+                aria-label="Próxima foto"
+              >
+                <ChevronRight />
+              </Button>
+            </div>
+            <div className="mt-3 flex gap-2 overflow-x-auto pb-2">
+              {FUNBOX_MEDIA.map((item, index) => (
+                <Button
+                  key={`${item.src}-${index}`}
+                  type="button"
+                  variant="outline"
+                  className={`relative h-16 w-16 shrink-0 overflow-hidden rounded-md p-0 ${mediaIndex === index ? "border-primary ring-2 ring-ring" : ""}`}
+                  onClick={() => setMediaIndex(index)}
+                  aria-label={`Abrir mídia ${index + 1}`}
+                >
+                  <img src={item.type === "video" ? item.poster : item.src} alt="" className="h-full w-full object-cover" />
+                  {item.type === "video" && <Play className="absolute inset-0 m-auto h-5 w-5 fill-card text-card" />}
+                </Button>
+              ))}
+            </div>
+          </div>
+
+          <div className="rounded-lg border border-border bg-card p-5 sm:p-7">
+            <div className="flex items-start gap-2">
+              <h1 className="text-3xl font-bold leading-tight text-foreground sm:text-4xl">MiniKo Squishy FunBox™ — Caixa Surpresa com 8 Squishies</h1>
+              <BadgeCheck className="mt-2 h-5 w-5 shrink-0 fill-primary text-card" />
+            </div>
+            <p className="mt-2 text-sm text-muted-foreground">Novo</p>
+            <div className="mt-4 flex flex-wrap items-center gap-2 text-sm"><Stars /><strong>4,9/5</strong><span className="text-muted-foreground">(avaliações verificadas)</span></div>
+            <div className="mt-5 space-y-2 text-sm">
+              <p className="flex items-center gap-2"><PackageCheck className="h-5 w-5 text-primary" /> Entrega estimada: 3 a 8 dias úteis</p>
+              <p className="flex items-center gap-2"><Truck className="h-5 w-5 text-accent" /> Envio com código de rastreamento</p>
+            </div>
+
+            <div className="my-6 border-t border-border" />
+            <p className="text-sm font-semibold">Escolha sua FunBox:</p>
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              {(Object.values(FUNBOX_VARIANTS)).map((variant) => (
+                <Button
+                  key={variant.id}
+                  type="button"
+                  variant="outline"
+                  onClick={() => setVariantId(variant.id)}
+                  className={`h-auto flex-col items-stretch gap-2 rounded-md p-2 text-left ${variantId === variant.id ? "border-primary ring-2 ring-ring" : ""}`}
+                >
+                  <img src={variant.image} alt={variant.shortName} className="aspect-square w-full rounded object-cover" />
+                  <span className="text-sm font-bold">{variant.shortName}</span>
+                  <span className="text-primary">{brl(variant.price)}</span>
+                </Button>
+              ))}
+            </div>
+
+            <div className="mt-6 flex items-end gap-3">
+              <span className="text-sm text-muted-foreground line-through">{brl(product.compareAt)}</span>
+              <span className="text-4xl font-black text-primary">{brl(product.price)}</span>
+            </div>
+            <p className="mt-1 text-sm text-muted-foreground">Pagamento à vista por Pix</p>
+            <p className="mt-3 inline-flex rounded bg-gold px-3 py-1 text-xs font-bold text-primary-foreground">
+              Economize {brl(product.compareAt - product.price)}
             </p>
-          </div>
-        </div>
-      </section>
 
-      {/* Marquee */}
-      <div className="overflow-hidden border-y border-border bg-card py-3">
-        <div className="marquee-track flex w-max gap-10 font-display text-xl tracking-[0.25em] text-primary">
-          {[...marqueeItems, ...marqueeItems].map((item, i) => (
-            <span key={i}>★ {item}</span>
-          ))}
-        </div>
-      </div>
+            <Button type="button" onClick={buyNow} className="mt-7 h-14 w-full bg-cta text-lg font-black uppercase text-cta-foreground shadow-sm hover:bg-cta/90">
+              <ShoppingCart className="h-5 w-5" /> Comprar agora
+            </Button>
+            <p className="mt-3 text-center text-xs text-muted-foreground">Frete grátis para todo o Brasil</p>
+          </div>
+        </section>
 
-      {/* What's inside */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <h2 className="text-center font-display text-5xl md:text-6xl">
-          TRÊS SQUISHIES, <span className="text-primary">UM SÓ KIT</span>
-        </h2>
-        <p className="mt-3 text-center text-lg italic text-muted-foreground">
-          Diversão, relaxamento e estilo para todas as idades!
-        </p>
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          <div className="rounded-xl border border-border bg-card p-8">
-            <p className="font-display text-3xl text-primary">CUBO SQUEEZE GELO</p>
-            <p className="mt-2 text-muted-foreground">
-              Cubo transparente com glitter em cores sortidas. Super sólido, squishy e hipnotizante
-              de apertar — o queridinho da galera!
-            </p>
+        <section className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
+          <div className="grid items-center gap-8 border-y border-border py-12 lg:grid-cols-2">
+            <div>
+              <p className="text-sm font-bold uppercase text-accent">Diversão de caixa cheia</p>
+              <h2 className="mt-2 text-4xl font-black text-foreground sm:text-5xl">8 squishies. 8 sensações. Uma caixa incrível!</h2>
+              <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+                Se apertar um já é gostoso, imagina abrir uma caixa com <strong className="text-foreground">8 squishies diferentes</strong> de uma vez. Cada modelo tem seu formato, textura e sensação ao apertar.
+              </p>
+              <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+                {FUNBOX_ITEMS.map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-sm font-semibold"><Sparkles className="h-4 w-4 text-primary" /> {item}</li>
+                ))}
+              </ul>
+            </div>
+            <img src={FUNBOX_GIF} alt="Squishies da FunBox em movimento" className="w-full rounded-lg border border-border" loading="lazy" />
           </div>
-          <div className="rounded-xl border border-border bg-card p-8">
-            <p className="font-display text-3xl text-primary">QUEIJO SQUISHY</p>
-            <p className="mt-2 text-muted-foreground">
-              O queijo anti-estresse mais divertido que existe! Textura macia e super satisfatória,
-              perfeito para aliviar a tensão do dia a dia.
-            </p>
-          </div>
-          <div className="rounded-xl border border-border bg-card p-8">
-            <p className="font-display text-3xl text-primary">BARRA MANTEIGA</p>
-            <p className="mt-2 text-muted-foreground">
-              Squishy em formato de barra de manteiga, feito para combater estresse e ansiedade.
-              Aperta, estica e volta ao formato original!
-            </p>
-          </div>
-        </div>
-        <ul className="mx-auto mt-10 grid max-w-3xl gap-3 sm:grid-cols-2">
-          {[
-            "Alivia o estresse e a ansiedade",
-            "Estimula a concentração",
-            "Ideal para presentear",
-            "Qualidade e diversão garantidas",
-          ].map((item) => (
-            <li key={item} className="flex items-center gap-2 text-sm">
-              <BadgeCheck className="h-5 w-5 shrink-0 text-primary" />
-              {item}
-            </li>
-          ))}
-        </ul>
-      </section>
+        </section>
 
-      {/* Trust strip */}
-      <section className="border-y border-border bg-card">
-        <div className="mx-auto grid max-w-6xl gap-8 px-6 py-12 text-center sm:grid-cols-3">
-          <div>
-            <Truck className="mx-auto h-8 w-8 text-primary" />
-            <p className="mt-2 font-display text-2xl">ENVIO EM 24H</p>
-            <p className="text-sm text-muted-foreground">Postagem no dia útil seguinte, com código de rastreio</p>
+        <section className="bg-muted py-16">
+          <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 sm:px-6 lg:grid-cols-2">
+            <img src={FUNBOX_MEDIA[6]?.type === "image" ? FUNBOX_MEDIA[6].src : FUNBOX_HERO} alt="Diferentes texturas da FunBox" className="w-full rounded-lg" loading="lazy" />
+            <div>
+              <h2 className="text-4xl font-black sm:text-5xl">Aperte. Amasse. Estique. Repita.</h2>
+              <p className="mt-5 text-lg leading-relaxed text-muted-foreground">Alguns são supermacios. Outros têm gel, glitter ou elementos dentro. São perfeitos para brincar, colecionar, trocar com as amigas ou simplesmente deixar as mãos ocupadas.</p>
+              <div className="mt-7 grid gap-4 sm:grid-cols-2">
+                <div className="flex gap-3"><Sparkles className="h-6 w-6 shrink-0 text-primary" /><div><strong>Diversão garantida</strong><p className="text-sm text-muted-foreground">Texturas, cores e formatos variados.</p></div></div>
+                <div className="flex gap-3"><Gift className="h-6 w-6 shrink-0 text-accent" /><div><strong>Presente completo</strong><p className="text-sm text-muted-foreground">A surpresa já começa pela caixa.</p></div></div>
+              </div>
+              <Button type="button" onClick={buyNow} className="mt-8 h-13 bg-cta px-8 font-bold uppercase text-cta-foreground hover:bg-cta/90">Quero minha FunBox</Button>
+            </div>
           </div>
-          <div>
-            <ShieldCheck className="mx-auto h-8 w-8 text-primary" />
-            <p className="mt-2 font-display text-2xl">COMPRA SEGURA</p>
-            <p className="text-sm text-muted-foreground">Pagamento protegido e troca garantida em 7 dias</p>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <div className="grid items-center gap-10 lg:grid-cols-2">
+            <div>
+              <h2 className="text-4xl font-black sm:text-5xl">Um presente que já começa pela caixa</h2>
+              <p className="mt-5 text-lg leading-relaxed text-muted-foreground">A FunBox chega com 8 squishies reunidos em uma caixa superdivertida, transformando o momento de abrir no melhor da brincadeira. Ideal para aniversário, datas especiais ou para fazer uma surpresa.</p>
+              <Button type="button" onClick={buyNow} className="mt-8 h-13 bg-cta px-8 font-bold uppercase text-cta-foreground hover:bg-cta/90">Comprar agora</Button>
+            </div>
+            <img src={FUNBOX_MEDIA[8]?.type === "image" ? FUNBOX_MEDIA[8].src : FUNBOX_HERO} alt="FunBox pronta para presentear" className="w-full rounded-lg border border-border" loading="lazy" />
           </div>
-          <div>
-            <Flame className="mx-auto h-8 w-8 text-primary" />
-            <p className="mt-2 font-display text-2xl">+3.200 VENDIDOS</p>
-            <p className="text-sm text-muted-foreground">O kit anti-estresse queridinho do Brasil</p>
+        </section>
+
+        <section className="border-y border-border bg-card">
+          <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 text-center sm:grid-cols-3 sm:px-6">
+            <div><Truck className="mx-auto h-8 w-8 text-primary" /><h3 className="mt-3 text-lg font-bold">Frete grátis</h3><p className="mt-1 text-sm text-muted-foreground">PAC ou SEDEX sem custo adicional.</p></div>
+            <div><PackageCheck className="mx-auto h-8 w-8 text-accent" /><h3 className="mt-3 text-lg font-bold">Pedido monitorado</h3><p className="mt-1 text-sm text-muted-foreground">Acompanhe todas as atualizações do envio.</p></div>
+            <div><ShieldCheck className="mx-auto h-8 w-8 text-gold" /><h3 className="mt-3 text-lg font-bold">Compra segura</h3><p className="mt-1 text-sm text-muted-foreground">Dados protegidos durante o pagamento.</p></div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Reviews */}
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <h2 className="text-center font-display text-5xl md:text-6xl">
-          QUEM COMPROU, <span className="text-primary">APROVOU</span>
-        </h2>
-        <div className="mt-3 flex items-center justify-center gap-2">
-          <Stars />
-          <span className="text-sm text-muted-foreground">4.9 de 5 · 986 avaliações verificadas</span>
-        </div>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {reviews.map((r) => (
-            <figure key={r.name} className="flex flex-col rounded-xl border border-border bg-card p-6">
-              <Stars />
-              <blockquote className="mt-3 flex-1 text-sm text-muted-foreground">“{r.text}”</blockquote>
-              <figcaption className="mt-4 border-t border-border pt-3">
-                <p className="font-semibold">{r.name}</p>
-                <p className="text-xs text-muted-foreground">{r.city} · Compra verificada</p>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section id="garantir" className="relative overflow-hidden border-t border-border">
-        <div className="absolute inset-0 bg-primary/10" />
-        <div className="relative mx-auto max-w-3xl px-6 py-20 text-center">
-          <p className="font-display text-2xl tracking-widest text-primary">★ OFERTA LIMITADA — KIT 3 SQUISHIES ★</p>
-          <h2 className="mt-4 font-display text-6xl md:text-7xl">
-            GARANTA JÁ <span className="text-primary">O SEU!</span>
-          </h2>
-          <p className="mt-4 text-muted-foreground">
-            Estoque limitado. Quando acabar, o preço volta ao normal.
-          </p>
-          <div className="mt-6 font-display text-7xl text-primary">
-            <span className="align-top text-4xl">R$</span> 49<span className="align-top text-4xl">,90</span>
+        <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <div className="text-center">
+            <p className="text-sm font-bold uppercase text-accent">Avaliações verificadas</p>
+            <h2 className="mt-2 text-4xl font-black sm:text-5xl">Quem abriu a FunBox, amou</h2>
+            <div className="mt-4 flex items-center justify-center gap-3"><Stars size="lg" /><strong className="text-2xl">4,9</strong><span className="text-muted-foreground">9 avaliações</span></div>
           </div>
-          <button
-            type="button"
-            onClick={() => setCheckoutOpen(true)}
-            className="mt-8 inline-block bg-primary px-10 py-5 font-display text-3xl tracking-widest text-primary-foreground shadow-[0_0_50px_-5px_var(--color-pinkglow)] transition-transform hover:scale-105"
-          >
-            ★ PAGAR COM PIX ★
-          </button>
+          <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+            {reviews.map((review) => (
+              <figure key={review.name} className="rounded-lg border border-border bg-card p-5 shadow-sm">
+                <div className="flex items-center justify-between"><Stars /><BadgeCheck className="h-5 w-5 text-primary" /></div>
+                <blockquote className="mt-4 min-h-16 text-sm leading-relaxed text-muted-foreground">“{review.text}”</blockquote>
+                <figcaption className="mt-4 border-t border-border pt-3 text-sm font-bold">{review.name} <span className="font-normal text-muted-foreground">· Compra verificada</span></figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
 
-          <p className="mt-4 text-xs text-muted-foreground">
-            Pix, cartão ou boleto · Envio para todo o Brasil
-          </p>
-        </div>
-      </section>
+        <section className="bg-primary px-4 py-14 text-center text-primary-foreground">
+          <h2 className="text-4xl font-black sm:text-5xl">Qual você vai apertar primeiro?</h2>
+          <p className="mx-auto mt-4 max-w-xl text-primary-foreground/80">Escolha sua FunBox e descubra todas as cores e texturas que vão chegar para você.</p>
+          <div className="mt-6 text-4xl font-black">{product.shortName} · {brl(product.price)}</div>
+          <Button type="button" onClick={buyNow} className="mt-7 h-14 bg-cta px-10 text-lg font-black uppercase text-cta-foreground hover:bg-cta/90">Comprar agora</Button>
+        </section>
+      </main>
 
-      <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
-        <p>Kit 3 Squishies — Cubo Squeeze Gelo, Queijo Squishy e Barra Manteiga.</p>
+      <footer className="bg-foreground px-4 py-8 text-center text-xs text-background/70">
+        <p>MiniKo Squishy FunBox™ · 8 squishies diferentes em uma única caixa.</p>
       </footer>
 
-      <PixCheckout open={checkoutOpen} onOpenChange={setCheckoutOpen} />
-
+      <PixCheckout open={checkoutOpen} onOpenChange={setCheckoutOpen} variantId={variantId} />
     </div>
   );
 }

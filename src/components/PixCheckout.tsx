@@ -21,20 +21,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createPixDeposit, checkPixStatus } from "@/lib/pix.functions";
-import kitAsset from "@/assets/kit-squishy.asset.json";
-
-const PRODUCT_PRICE = 49.9;
-const PRODUCT_NAME = "Kit 3 Squishies — Super Oferta";
-const PRODUCT_IMAGE_URL = `https://project--24592de8-3a87-4821-adfa-a124e2b3eddd-dev.lovable.app${kitAsset.url}`;
-const PRODUCT_ITEMS = [
-  "Butter Squishy Manteiga",
-  "Needoh Schylling Nice Cube Glitter & Glow Nee Doh Original",
-  "Squishy Queijo Alívio Estresse Brinquedo Sensorial Apertar",
-];
+import { FUNBOX_ITEMS, FUNBOX_VARIANTS, type FunboxVariantId } from "@/lib/funbox";
 
 const SHIPPING = [
-  { id: "pac", label: "ENVIOS PAC", eta: "7 dias úteis", price: 18.91 },
-  { id: "sedex", label: "ENVIOS SEDEX", eta: "5 dias úteis", price: 24.52 },
+  { id: "pac", label: "ENVIOS PAC", eta: "7 dias úteis", price: 0 },
+  { id: "sedex", label: "ENVIOS SEDEX", eta: "5 dias úteis", price: 0 },
 ] as const;
 
 type ShippingId = (typeof SHIPPING)[number]["id"];
@@ -67,9 +58,18 @@ function maskCep(value: string) {
 
 const inputClass = "h-12 text-base";
 
-export function PixCheckout({ open, onOpenChange }: { open: boolean; onOpenChange: (v: boolean) => void }) {
+export function PixCheckout({
+  open,
+  onOpenChange,
+  variantId,
+}: {
+  open: boolean;
+  onOpenChange: (v: boolean) => void;
+  variantId: FunboxVariantId;
+}) {
   const deposit = useServerFn(createPixDeposit);
   const check = useServerFn(checkPixStatus);
+  const product = FUNBOX_VARIANTS[variantId];
 
   const [step, setStep] = useState<Step>(1);
 
@@ -100,7 +100,7 @@ export function PixCheckout({ open, onOpenChange }: { open: boolean; onOpenChang
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const shippingOption = SHIPPING.find((s) => s.id === shipping) ?? null;
-  const total = PRODUCT_PRICE + (shippingOption?.price ?? 0);
+  const total = product.price;
 
   const stopPolling = useCallback(() => {
     if (pollRef.current) {
@@ -188,7 +188,7 @@ export function PixCheckout({ open, onOpenChange }: { open: boolean; onOpenChang
       const result = await deposit({
         data: {
           amount: Number(total.toFixed(2)),
-          description: PRODUCT_NAME,
+          description: product.name,
           payerName: name.trim(),
           payerDocument: cpf.replace(/\D/g, ""),
         },
@@ -254,27 +254,27 @@ export function PixCheckout({ open, onOpenChange }: { open: boolean; onOpenChang
         <DialogHeader className="text-left">
           <DialogTitle className="font-display text-2xl tracking-wide sm:text-3xl">{titles[step]}</DialogTitle>
           <DialogDescription>
-            {step < 4 ? `Etapa ${step} de 3 · ${PRODUCT_NAME.split("—")[0]?.trim()}` : "Recebemos seu pagamento."}
+            {step < 4 ? `Etapa ${step} de 3 · ${product.shortName}` : "Recebemos seu pagamento."}
           </DialogDescription>
         </DialogHeader>
 
         {step < 4 && (
           <div className="flex gap-3 rounded-lg border border-border bg-card p-3">
             <img
-              src={PRODUCT_IMAGE_URL}
-              alt="Kit 3 Squishies — Super Oferta"
+              src={product.image}
+              alt={product.name}
               width={72}
               height={72}
               className="h-18 w-18 shrink-0 rounded-md border border-border object-cover"
             />
             <div className="min-w-0">
-              <p className="text-sm font-semibold leading-tight">{PRODUCT_NAME}</p>
+              <p className="text-sm font-semibold leading-tight">{product.name}</p>
               <ul className="mt-1 list-disc space-y-0.5 pl-4 text-xs text-muted-foreground">
-                {PRODUCT_ITEMS.map((item) => (
+                {FUNBOX_ITEMS.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-              <p className="mt-1 font-display text-lg text-primary">{brl(PRODUCT_PRICE)}</p>
+              <p className="mt-1 text-lg font-bold text-primary">{brl(product.price)}</p>
             </div>
           </div>
         )}
@@ -434,7 +434,7 @@ export function PixCheckout({ open, onOpenChange }: { open: boolean; onOpenChang
                     </span>
                     <span className="block text-xs text-muted-foreground">Entrega em até {option.eta}</span>
                   </span>
-                  <span className="font-display text-xl text-primary">{brl(option.price)}</span>
+                   <span className="text-sm font-bold uppercase text-primary">Frete grátis</span>
                 </button>
               ))}
             </div>
@@ -467,16 +467,16 @@ export function PixCheckout({ open, onOpenChange }: { open: boolean; onOpenChang
               <p className="font-display text-xl tracking-wide">RESUMO DO PEDIDO</p>
               <div className="mt-3 flex gap-3 rounded-md border border-border bg-background/50 p-3">
                 <img
-                  src={PRODUCT_IMAGE_URL}
-                  alt="Kit 3 Squishies — Super Oferta"
+                   src={product.image}
+                   alt={product.name}
                   width={72}
                   height={72}
                   className="h-18 w-18 shrink-0 rounded-md border border-border object-cover"
                 />
                 <div className="min-w-0">
-                  <p className="text-sm font-semibold leading-tight">{PRODUCT_NAME}</p>
+                   <p className="text-sm font-semibold leading-tight">{product.name}</p>
                   <ul className="mt-1 list-disc space-y-0.5 pl-4 text-xs text-muted-foreground">
-                    {PRODUCT_ITEMS.map((item) => (
+                     {FUNBOX_ITEMS.map((item) => (
                       <li key={item}>{item}</li>
                     ))}
                   </ul>
@@ -484,14 +484,14 @@ export function PixCheckout({ open, onOpenChange }: { open: boolean; onOpenChang
               </div>
               <div className="mt-3 space-y-2 text-sm">
                 <div className="flex justify-between gap-3">
-                  <span className="text-muted-foreground">Kit 3 Squishies (Super Oferta)</span>
-                  <span>{brl(PRODUCT_PRICE)}</span>
+                   <span className="text-muted-foreground">{product.shortName}</span>
+                   <span>{brl(product.price)}</span>
                 </div>
                 <div className="flex justify-between gap-3">
                   <span className="text-muted-foreground">
                     {shippingOption ? `${shippingOption.label} (${shippingOption.eta})` : "Frete"}
                   </span>
-                  <span>{brl(shippingOption?.price ?? 0)}</span>
+                   <span className="font-semibold text-primary">Grátis</span>
                 </div>
                 <div className="flex justify-between gap-3 border-t border-border pt-2 font-display text-2xl">
                   <span>TOTAL</span>
@@ -596,7 +596,7 @@ export function PixCheckout({ open, onOpenChange }: { open: boolean; onOpenChang
             </div>
             <p className="font-display text-3xl text-primary">PEDIDO CONFIRMADO</p>
             <p className="text-sm text-muted-foreground">
-              Seu Kit Sobrevivência será postado no próximo dia útil com código de rastreio enviado para {email}.
+               Sua {product.shortName} será postada no próximo dia útil com código de rastreio enviado para {email}.
             </p>
             <button
               type="button"

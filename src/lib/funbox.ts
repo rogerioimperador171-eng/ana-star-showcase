@@ -13,6 +13,9 @@ import demoVideoAsset from "@/assets/miniko/demo.mp4.asset.json";
 
 export type FunboxVariantId = "classic" | "cute";
 
+const ASSET_ORIGIN = "https://project--24592de8-3a87-4821-adfa-a124e2b3eddd-dev.lovable.app";
+const assetUrl = (path: string) => `${ASSET_ORIGIN}${path}`;
+
 export type FunboxVariant = {
   id: FunboxVariantId;
   name: string;
@@ -40,7 +43,7 @@ export const FUNBOX_VARIANTS: Record<FunboxVariantId, FunboxVariant> = {
     shortName: "FunBox Classic",
     price: 49.9,
     compareAt: 99.9,
-    image: classicAsset.url,
+    image: assetUrl(classicAsset.url),
   },
   cute: {
     id: "cute",
@@ -48,23 +51,23 @@ export const FUNBOX_VARIANTS: Record<FunboxVariantId, FunboxVariant> = {
     shortName: "FunBox Cute",
     price: 89.9,
     compareAt: 149.9,
-    image: cuteAsset.url,
+    image: assetUrl(cuteAsset.url),
   },
 };
 
 export const FUNBOX_MEDIA = [
-  { type: "image" as const, src: heroAsset.url, alt: "MiniKo Squishy FunBox com 8 squishies" },
-  { type: "video" as const, src: demoVideoAsset.url, poster: gallery3Asset.url, alt: "Vídeo demonstrativo da FunBox" },
-  { type: "image" as const, src: classicAsset.url, alt: "FunBox Classic com seus squishies" },
-  { type: "image" as const, src: cuteAsset.url, alt: "FunBox Cute com seus squishies" },
-  { type: "image" as const, src: gallery3Asset.url, alt: "Modelos da coleção FunBox" },
-  { type: "image" as const, src: gallery4Asset.url, alt: "Squishies coloridos da FunBox" },
-  { type: "image" as const, src: gallery5Asset.url, alt: "Detalhes dos squishies sensoriais" },
-  { type: "image" as const, src: gallery6Asset.url, alt: "Conteúdo da caixa FunBox" },
-  { type: "image" as const, src: giftAsset.url, alt: "FunBox pronta para presentear" },
-  { type: "image" as const, src: gallery8Asset.url, alt: "Texturas variadas dos squishies" },
-  { type: "image" as const, src: gallery9Asset.url, alt: "Coleção completa MiniKo FunBox" },
+  { type: "image" as const, src: assetUrl(heroAsset.url), alt: "MiniKo Squishy FunBox com 8 squishies" },
+  { type: "video" as const, src: assetUrl(demoVideoAsset.url), poster: assetUrl(gallery3Asset.url), alt: "Vídeo demonstrativo da FunBox" },
+  { type: "image" as const, src: assetUrl(classicAsset.url), alt: "FunBox Classic com seus squishies" },
+  { type: "image" as const, src: assetUrl(cuteAsset.url), alt: "FunBox Cute com seus squishies" },
+  { type: "image" as const, src: assetUrl(gallery3Asset.url), alt: "Modelos da coleção FunBox" },
+  { type: "image" as const, src: assetUrl(gallery4Asset.url), alt: "Squishies coloridos da FunBox" },
+  { type: "image" as const, src: assetUrl(gallery5Asset.url), alt: "Detalhes dos squishies sensoriais" },
+  { type: "image" as const, src: assetUrl(gallery6Asset.url), alt: "Conteúdo da caixa FunBox" },
+  { type: "image" as const, src: assetUrl(giftAsset.url), alt: "FunBox pronta para presentear" },
+  { type: "image" as const, src: assetUrl(gallery8Asset.url), alt: "Texturas variadas dos squishies" },
+  { type: "image" as const, src: assetUrl(gallery9Asset.url), alt: "Coleção completa MiniKo FunBox" },
 ];
 
-export const FUNBOX_GIF = demoGifAsset.url;
-export const FUNBOX_HERO = heroAsset.url;
+export const FUNBOX_GIF = assetUrl(demoGifAsset.url);
+export const FUNBOX_HERO = assetUrl(heroAsset.url);

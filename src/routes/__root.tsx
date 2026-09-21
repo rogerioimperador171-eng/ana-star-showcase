@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { META_PIXEL_SCRIPT, META_PIXEL_NOSCRIPT_SRC } from "../lib/metaPixel";
 
 function NotFoundComponent() {
   return (

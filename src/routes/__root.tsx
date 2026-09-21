@@ -115,8 +115,20 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        {/* Meta Pixel Code */}
+        <script dangerouslySetInnerHTML={{ __html: META_PIXEL_SCRIPT }} />
+        {/* End Meta Pixel Code */}
       </head>
       <body>
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src={META_PIXEL_NOSCRIPT_SRC}
+            alt=""
+          />
+        </noscript>
         {children}
         <Scripts />
       </body>

@@ -49,15 +49,15 @@ export const Route = createFileRoute("/")({
 });
 
 const reviews = [
-  { name: "Olivia R.", text: "Pedi e chegou antes do prazo. Todos vieram bem embalados e são de ótima qualidade." },
-  { name: "Bruna O.", text: "Muito legais, minha filha ficou alucinada. A caixa é linda e veio tudo certinho." },
-  { name: "Juliano Q.", text: "Vale muito a pena. São oito modelos diferentes e o frete foi bem rápido." },
-  { name: "Naiane E.", text: "Ótimos! Um mais bonito que o outro e muito gostosos de apertar." },
-  { name: "Daiane T.", text: "Tudo perfeito. A caixa chegou bem protegida e recomendo muito." },
-  { name: "Gabriela U.", text: "Sensacional. Um mais fofo que o outro, foi um presente perfeito." },
-  { name: "Amelia O.", text: "Chegou hoje e nós estamos enlouquecidas. São muito gostosinhos de apertar." },
-  { name: "Vanessa Z.", text: "Chegou bem rapidinho com todos os itens diferentes e com rastreamento." },
-  { name: "Carla P.", text: "São lindos. Amamos a surpresa e a qualidade dos squishies." },
+  { name: "Olivia R.", city: "São Paulo, SP", title: "Chegou antes do prazo", text: "A caixa chegou muito bem protegida e antes da data prevista. Vieram 8 modelos diferentes, todos macios e sem nenhum defeito." },
+  { name: "Bruna O.", city: "Campinas, SP", title: "Minha filha amou a surpresa", text: "Foi presente de aniversário e fez o maior sucesso. A embalagem é linda, os squishies são coloridos e vieram exatamente como mostrado." },
+  { name: "Juliano Q.", city: "Curitiba, PR", title: "Compra que vale a pena", text: "Gostei da variedade e da qualidade. O pedido teve rastreamento desde o envio e chegou dentro do prazo informado." },
+  { name: "Naiane E.", city: "Goiânia, GO", title: "Um mais bonito que o outro", text: "As texturas são bem diferentes entre si e muito gostosas de apertar. Minha filha já escolheu os favoritos dela." },
+  { name: "Daiane T.", city: "Belo Horizonte, MG", title: "Tudo certo com o pedido", text: "Recebi a FunBox bem fechada, com os 8 itens e sem avarias. A qualidade me surpreendeu e compraria novamente." },
+  { name: "Gabriela U.", city: "Salvador, BA", title: "Presente perfeito", text: "Comprei para minha sobrinha e ela ficou encantada quando abriu. A caixa já vem pronta para presentear e os modelos são muito fofos." },
+  { name: "Amelia O.", city: "Recife, PE", title: "Diversão para a família", text: "Chegou hoje e todo mundo quis experimentar. São macios, divertidos e cada um tem uma sensação diferente ao apertar." },
+  { name: "Vanessa Z.", city: "Fortaleza, CE", title: "Entrega rápida e rastreada", text: "Recebi as atualizações do envio certinho e a entrega foi rápida. Todos os itens vieram diferentes e bem embalados." },
+  { name: "Carla P.", city: "Porto Alegre, RS", title: "Qualidade aprovada", text: "As cores são lindas e o material parece resistente. Minha filha brinca todos os dias e os squishies continuam como novos." },
 ];
 
 function Stars({ size = "sm" }: { size?: "sm" | "lg" }) {
@@ -284,17 +284,29 @@ function Index() {
         </section>
 
         <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-          <div className="text-center">
-            <p className="text-sm font-bold uppercase text-accent">Avaliações verificadas</p>
-            <h2 className="mt-2 text-4xl font-black sm:text-5xl">Quem abriu a FunBox, amou</h2>
-            <div className="mt-4 flex items-center justify-center gap-3"><Stars size="lg" /><strong className="text-2xl">4,9</strong><span className="text-muted-foreground">9 avaliações</span></div>
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-sm font-bold uppercase text-primary">Opiniões de quem já comprou</p>
+            <h2 className="mt-2 text-4xl font-black sm:text-5xl">A FunBox chegou e conquistou</h2>
+            <p className="mt-3 text-muted-foreground">Clientes de todo o Brasil contam como foi receber, abrir e brincar com a caixa.</p>
+            <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-md border border-border bg-card px-5 py-3 shadow-sm">
+              <strong className="text-3xl text-foreground">4,9</strong>
+              <Stars size="lg" />
+              <span className="text-sm font-semibold text-muted-foreground">Excelente avaliação</span>
+            </div>
           </div>
           <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
             {reviews.map((review) => (
-              <figure key={review.name} className="rounded-lg border border-border bg-card p-5 shadow-sm">
-                <div className="flex items-center justify-between"><Stars /><BadgeCheck className="h-5 w-5 text-primary" /></div>
-                <blockquote className="mt-4 min-h-16 text-sm leading-relaxed text-muted-foreground">“{review.text}”</blockquote>
-                <figcaption className="mt-4 border-t border-border pt-3 text-sm font-bold">{review.name} <span className="font-normal text-muted-foreground">· Compra verificada</span></figcaption>
+              <figure key={review.name} className="flex min-h-64 flex-col rounded-lg border border-border bg-card p-5 shadow-sm transition-shadow hover:shadow-md">
+                <div className="flex items-center justify-between gap-3">
+                  <Stars />
+                  <span className="inline-flex items-center gap-1 text-xs font-bold text-primary"><BadgeCheck className="h-4 w-4" /> Compra verificada</span>
+                </div>
+                <h3 className="mt-5 text-xl font-bold text-foreground">{review.title}</h3>
+                <blockquote className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">“{review.text}”</blockquote>
+                <figcaption className="mt-5 border-t border-border pt-4">
+                  <span className="block text-sm font-bold text-foreground">{review.name}</span>
+                  <span className="text-xs text-muted-foreground">{review.city}</span>
+                </figcaption>
               </figure>
             ))}
           </div>

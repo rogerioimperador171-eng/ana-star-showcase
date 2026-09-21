@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { META_PIXEL_SCRIPT, META_PIXEL_NOSCRIPT_SRC } from "../lib/metaPixel";
 
 function NotFoundComponent() {
   return (
@@ -114,8 +115,20 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        {/* Meta Pixel Code */}
+        <script dangerouslySetInnerHTML={{ __html: META_PIXEL_SCRIPT }} />
+        {/* End Meta Pixel Code */}
       </head>
       <body>
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src={META_PIXEL_NOSCRIPT_SRC}
+            alt=""
+          />
+        </noscript>
         {children}
         <Scripts />
       </body>
